@@ -9,7 +9,7 @@ ${BROWSER}  Chrome
 
 *** Keywords ***
 #### HOOKS
-Entrando na tela de edicao
+Criando massa de dados
     Open Browser    ${URL}  ${BROWSER}
     #List_User_Elements
     Click Element    ${btn_new_user}
@@ -19,6 +19,10 @@ Entrando na tela de edicao
     Input Text  ${input_phone}  99999999
     Input Text  ${input_email}  TESTE@ROBOT.COM
     Click Element   ${btn_save}
+    Close Browser
+
+Entrando na tela de edicao
+    Open Browser    ${URL}  ${BROWSER}
     #List_User_Elements
     Select From List By Label    ${select_pagination}    50
     sleep   1
@@ -33,7 +37,6 @@ Entrando na tela de edicao
         Run Keyword If  '${string}'=='ATESTEEDICAO'   Click Element   ${list_user_firstname}[${index}]
     END
     Click Element   ${btn_edit_user}
-    
 
 Fechando browser
     Close Browser

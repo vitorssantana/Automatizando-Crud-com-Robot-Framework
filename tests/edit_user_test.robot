@@ -2,6 +2,7 @@
 Documentation   O usuario editz os dados de um user e os submete no formulario para atualizar os dados no sistema
 Resource    ../resources/edit_user_steps.robot
 
+Suite Setup     Criando massa de dados
 Test Setup  Entrando na tela de edicao
 Test Teardown  Fechando browser
 

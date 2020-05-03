@@ -24,7 +24,6 @@ Nao preenchimento do campo email
 
 Preenchimento de email invalido
     [Template]  Preenchimento de email online
-    # Examples:
     # EMAIL
     vitorsantana@robotcom
     vitorsantana.robot.com
