@@ -1,7 +1,9 @@
 *** Settings ***
 Library  SeleniumLibrary
 Library    Collections
-Variables  ../pom/locator.py
+Resource    ../pom/cadastro_user_page.robot
+Resource    ../pom/lista_user_page.robot
+Resource    ../pom/remocao_user_page.robot
 
 *** Variables ***
 ${URL}      https://www.jeasyui.com/tutorial/app/crud/index.html
@@ -11,14 +13,12 @@ ${BROWSER}  Chrome
 #### HOOKS
 Criando massa de dados
     Open Browser    ${URL}  ${BROWSER}
-    #List_User_Elements
-    Click Element    ${btn_new_user}
-    #Cadastro_User_Elements
-    Input Text  ${input_first_name}  TESTELISTAGEM
-    Input Text  ${input_last_name}  SISTEMA
-    Input Text  ${input_phone}  99999999
-    Input Text  ${input_email}  TESTE@ROBOT.COM
-    Click Element   ${btn_save}
+    Clicar Botao Novo User
+    Preencher First Name  TESTELISTAGEM
+    Preencher Last Name     SISTEMA
+    Preencher Phone  99999999
+    Preencher Email     TESTE@ROBOT.COM
+    Salvar Novo User    
     Close Browser
 
 Entrando no jeasuyi
@@ -28,7 +28,7 @@ Fechando browser
     Close Browser
 
 Tento criar um novo user
-    Click Element   ${btn_new_user}
+    Clicar Botao Novo User
 
 Devo ver o modal de cadastro de user
     Page Should Contain Element     ${input_first_name}
@@ -36,13 +36,13 @@ Devo ver o modal de cadastro de user
     Page Should Contain Element     ${input_phone}
     Page Should Contain Element     ${input_email}
     Page Should Contain Element     ${btn_save}
-    Page Should Contain Element     ${btn_cancel}
+    Page Should Contain Element     ${btn_cancel_add_user}
 
 Tento editar user sem seleciona-lo
-    Click Element   ${btn_edit_user}
+    Clicar Botao Editar User
 
 Tento remover user sem seleciona-lo
-    Click Element   ${btn_remove_user}
+    Clicar Botao Remover User
 
 Devo continuar vendo a listagem
     Page Should Contain Element     ${btn_new_user}
@@ -51,21 +51,15 @@ Devo continuar vendo a listagem
     Page Should Contain Element     ${select_pagination}
     Page Should Contain Element     ${input_pagination}
     ${count} =  Get Element Count   ${list_users}
-    Should Be True  ${count}    >   0
+    Should Be True  ${count} > 0
 
 Tento editar user o selecionando antes
-    Select From List By Label    ${select_pagination}    50
+    Selecionar Quantidade de Registros Mostrados    50
     sleep   1
-    Input Text  ${input_pagination}     9999
-    Press Keys  ${input_pagination}     ENTER
+    Inserir Numero Paginacao    9999
     sleep   1
-    ${list_user_firstname}=    Get WebElements     ${firstname_list_user}
-    ${length}=  Get Length  ${list_user_firstname}
-    FOR    ${index}   IN RANGE  ${length}
-        ${string}=    Get Text    ${list_user_firstname}[${index}]
-        Run Keyword If  '${string}'=='TESTELISTAGEM'   Click Element   ${list_user_firstname}[${index}]
-    END
-    Click Element   ${btn_edit_user}
+    Selecionar User Na Lista    TESTELISTAGEM
+    Clicar Botao Editar User
 
 Devo ver o modal de edicao de user
     Page Should Contain Element     ${input_first_name}
@@ -73,23 +67,17 @@ Devo ver o modal de edicao de user
     Page Should Contain Element     ${input_phone}
     Page Should Contain Element     ${input_email}
     Page Should Contain Element     ${btn_save}
-    Page Should Contain Element     ${btn_cancel}
+    Page Should Contain Element     ${btn_cancel_add_user}
 
 Tento remover user o selecionando antes
-    Select From List By Label    ${select_pagination}    50
+    Selecionar Quantidade de Registros Mostrados    50
     sleep   1
-    Input Text  ${input_pagination}     9999
-    Press Keys  ${input_pagination}     ENTER
+    Inserir Numero Paginacao
     sleep   1
-    ${list_user_firstname}=    Get WebElements     ${firstname_list_user}
-    ${length}=  Get Length  ${list_user_firstname}
-    FOR    ${index}   IN RANGE  ${length}
-        ${string}=    Get Text    ${list_user_firstname}[${index}]
-        Run Keyword If  '${string}'=='TESTELISTAGEM'   Click Element   ${list_user_firstname}[${index}]
-    END
-    Click Element   ${btn_remove_user}
+    Selecionar User Na Lista    TESTELISTAGEM
+    Clicar Botao Remover User
 
 Devo recever solicitacao de confirmacao de remocao
     Page Should Contain     Are you sure you want to destroy this user?
-    Page Should Contain Element     btn_ok
-    Page Should Contain Element     btn_cancel
+    Page Should Contain Element     ${btn_ok}
+    Page Should Contain Element     ${btn_cancel}

@@ -1,7 +1,8 @@
 *** Settings ***
 Library  SeleniumLibrary
 Library    Collections
-Variables  ../pom/locator.py
+Resource    ../pom/edit_user_page.robot
+Resource    ../pom/lista_user_page.robot
 
 *** Variables ***
 ${URL}      https://www.jeasyui.com/tutorial/app/crud/index.html
@@ -11,52 +12,41 @@ ${BROWSER}  Chrome
 #### HOOKS
 Criando massa de dados
     Open Browser    ${URL}  ${BROWSER}
-    #List_User_Elements
-    Click Element    ${btn_new_user}
-    #Cadastro_User_Elements
-    Input Text  ${input_first_name}  ATESTEEDICAO
-    Input Text  ${input_last_name}  ROBOT
-    Input Text  ${input_phone}  99999999
-    Input Text  ${input_email}  TESTE@ROBOT.COM
-    Click Element   ${btn_save}
+    Clicar Botao Novo User
+    Preencher First Name  ATESTEEDICAO
+    Preencher Last Name     ROBOT
+    Preencher Phone  99999999
+    Preencher Email     TESTE@ROBOT.COM
+    Salvar Novo User
     Close Browser
 
 Entrando na tela de edicao
     Open Browser    ${URL}  ${BROWSER}
-    #List_User_Elements
-    Select From List By Label    ${select_pagination}    50
+    Selecionar Quantidade de Registros Mostrados    50
     sleep   1
-    Input Text  ${input_pagination}     9999
-    Press Keys  ${input_pagination}     ENTER
+    Inserir Numero Paginacao    9999
     sleep   1
-    
-    ${list_user_firstname}=    Get WebElements     ${firstname_list_user}
-    ${length}=  Get Length  ${list_user_firstname}
-    FOR    ${index}   IN RANGE  ${length}
-        ${string}=    Get Text    ${list_user_firstname}[${index}]
-        Run Keyword If  '${string}'=='ATESTEEDICAO'   Click Element   ${list_user_firstname}[${index}]
-    END
-    Click Element   ${btn_edit_user}
+    Selecionar User Na Lista    ATESTEEDICAO
+    Clicar Botao Editar User
 
 Fechando browser
     Close Browser
 
-#### STEPS
 Tento alterar o user com dados "${FIRST_NAME}", "${LAST_NAME}", "${PHONE}", "${EMAIL}"
-    Input Text  ${input_first_name}  ${FIRST_NAME}
-    Input Text  ${input_last_name}  ${LAST_NAME}
-    Input Text  ${input_phone}  ${phone}
-    Input Text  ${input_email}  ${EMAIL}
-    Click Element   ${btn_save}
-    sleep   1
+    Preencher First Name    ${FIRST_NAME}
+    Preencher Last Name     ${LAST_NAME}
+    Preencher Phone     ${PHONE}
+    Preencher Email     ${EMAIL}
+    Salvar Novo User
 
 Devo ver mensagem "${MESSAGE}"
     Page Should Contain     ${MESSAGE}
-
+ 
 Devo ver o user "${FIRSTNAME}", "${LASTNAME}", "${PHONE}", "${EMAIL}" cadastrado na lista
-    Select From List By Label    ${select_pagination}    50
-    Input Text  ${input_pagination}     9999
-    Press Keys  ${input_pagination}     ENTER
+    Selecionar Quantidade de Registros Mostrados    50
+    sleep   1
+    Inserir Numero Paginacao    9999
+    sleep   1
     Page Should Contain     ${FIRSTNAME}
     Page Should Contain     ${LASTNAME}
     Page Should Contain     ${PHONE}

@@ -1,7 +1,8 @@
 *** Settings ***
 Library  SeleniumLibrary
 Library    Collections
-Variables  ../pom/locator.py
+Resource    ../pom/cadastro_user_page.robot
+Resource    ../pom/lista_user_page.robot
 
 *** Variables ***
 ${URL}      https://www.jeasyui.com/tutorial/app/crud/index.html
@@ -11,28 +12,27 @@ ${BROWSER}  Chrome
 #### HOOKS
 Entrando na tela de cadastro
     Open Browser    ${URL}  ${BROWSER}
-    #List_User_Elements
-    Click Element    ${btn_new_user}
+    Clicar Botao Novo User
 
 Fechando browser
     Close Browser
 
 #### STEPS
 Tento cadastrar o user "${FIRST_NAME}", "${LAST_NAME}", "${PHONE}", "${EMAIL}"
-    Input Text  ${input_first_name}  ${FIRST_NAME}
-    Input Text  ${input_last_name}  ${LAST_NAME}
-    Input Text  ${input_phone}  ${phone}
-    Input Text  ${input_email}  ${EMAIL}
-    Click Element   ${btn_save}
+    Preencher First Name    ${FIRST_NAME}
+    Preencher Last Name     ${LAST_NAME}
+    Preencher Phone     ${PHONE}
+    Preencher Email     ${EMAIL}
+    Salvar Novo User
 
 Devo ver mensagem "${MESSAGE}"
     Page Should Contain     ${MESSAGE}
-
+ 
 Devo ver o user "${FIRSTNAME}", "${LASTNAME}", "${PHONE}", "${EMAIL}" cadastrado na lista
-    #List_User_Elements
-    Select From List By Label    ${select_pagination}    50
-    Input Text  ${input_pagination}     9999
-    Press Keys  ${input_pagination}     ENTER
+    Selecionar Quantidade de Registros Mostrados    50
+    sleep   1
+    Inserir Numero Paginacao    9999
+    sleep   1
     Page Should Contain     ${FIRSTNAME}
     Page Should Contain     ${LASTNAME}
     Page Should Contain     ${PHONE}
