@@ -72,7 +72,7 @@ Devo ver o modal de edicao de user
 Tento remover user o selecionando antes
     Selecionar Quantidade de Registros Mostrados    50
     sleep   1
-    Inserir Numero Paginacao
+    Inserir Numero Paginacao    9999
     sleep   1
     Selecionar User Na Lista    TESTELISTAGEM
     Clicar Botao Remover User
